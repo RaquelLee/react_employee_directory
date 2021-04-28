@@ -14,6 +14,7 @@ Employee directory made with react.
 []()
 
 ## Technologies Used 
+[Random User API](https://randomuser.me/)
 * React
 * Node.js
 
