@@ -1,29 +1,60 @@
-import React from "react";
-import API from "../utils/API";
+import React, { Component } from "react";
+import EmployeeTable from "../EmployeeTable";
+import API from "../../utils/API";
 // api starts with .result, 
 // render name search here
 
 class EmployeeContainer extends Component {
     state = {
-        result: {},
+        search: '',
+        employees: [],
     };
+
     componentDidMount() {
-        this.searchEmployees();
+        this.setAllEmployees();
     }
 
-    searchMovies = query => {
-        API.search(query)
-            .then(res => this.setState({ result: res.data }))
+    setAllEmployees = () => {
+        API.getEmployees()
+            .then(res => this.setState(
+                {employees: [res.results]} ))
             .catch(err => console.log(err));
     };
-    render() {
-        return (
-            <tr>
-                <th scope="row">picture.thumbnail</th>
-                <td>name.first name.last</td>
-                <td>email</td>
-            </tr>
+    
+    handleSearchInput = (e) => {
+        this.setState({ search: e.target.value })
+    }
+    searchEmployeeByName = () => {
+        this.employees.filter((employee) => {
+            return employee.name.first === this.search;
+        })
+    };
 
+    sortEmployeeByName = () => {
+    };
+
+    render() {
+        const { employees, search } = this.state
+        return (
+            <main>
+                <form>
+                    <input type="text" placeholder="Name"
+                        value={search}
+                        onChange={this.handleSearchInput}>
+                    </input>
+                </form>
+                <EmployeeTable
+                    {...employees.map((employee) => {
+                        return (
+                            <tr>
+                                <td>{employee.picture.thumbnail}</td>
+                                <td>{employee.name.first}
+                                    {employee.name.last}</td>
+                                <td>{employee.email}</td>
+                            </tr>)
+                    })}
+                />
+            </main>
         );
     }
 }
