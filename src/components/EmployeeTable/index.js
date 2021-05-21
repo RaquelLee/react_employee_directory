@@ -1,7 +1,6 @@
 import React from "react";
-import EmployeeRow from "../EmployeeRow";
 
-function EmployeeTable() {
+function EmployeeTable(props) {
     return (
         <table class="table table-hover">
             <thead>
@@ -10,13 +9,9 @@ function EmployeeTable() {
                     <th scope="col">Name</th>
                     <th scope="col">Email</th>
                 </tr>
-
             </thead>
             <tbody>
-                {/* render employees */}
-                {props.results.map(result => (
-                    <EmployeeRow></EmployeeRow>
-                ))}
+                {props.children}
             </tbody>
         </table>
     );
