@@ -17,11 +17,11 @@ class EmployeeContainer extends Component {
     setAllEmployees = () => {
         API.getEmployees()
             .then(res => 
-                console.log("API.getEmployees",
-                res.data.results))
-                // this.setState(
-                // {employees: [res.data.results]} 
-                // ))
+                // console.log("API.getEmployees",
+                // res.data.results))
+                this.setState(
+                {employees: [res.data.results]} 
+                ))
                 .then(console.log(this.state.employees))
             .catch(err => console.log(err));
     };
