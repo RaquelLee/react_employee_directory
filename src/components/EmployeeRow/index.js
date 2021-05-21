@@ -24,16 +24,20 @@ class EmployeeContainer extends Component {
     };
 
     handleSearchInput = (e) => {
-        this.setState({ search: e.target.value })
-        
-    }
+        this.setState({ search: e.target.value });
+    };
 
     SearchEmployeeByName = (e) => {
         this.employees.filter((employee) => {
             return employee.name.first === this.search;
-        })}
+        });
+    };
 
-    sortEmployeeByName = () => {
+    componentDidUpdate(prevProps) {
+        // Typical usage (don't forget to compare props):
+        if (this.props.search !== prevProps.search) {
+            this.SearchEmployeeByName()
+        };
     };
 
     render() {
@@ -43,25 +47,30 @@ class EmployeeContainer extends Component {
                 <form>
                     <input type="text" placeholder="Name"
                         value={search}
-                        onChange={this.handleSearchInput}
-                        {...console.log(search)}
-                        >
+                        onChange=
+                        {this.handleSearchInput}
+                        {...console.log(search)}>
                     </input>
                 </form>
                 <EmployeeTable>
                     {employees.map((employee) => {
-                            return (
-                                <tr>
-                                    <td><img src={employee.picture.medium}></img>
-                                    </td>
-                                    <td>{employee.name.first}
-                                        {employee.name.last}</td>
-                                    <td>{employee.email}</td>
-                                </tr>)
-                        }
-                    )}
-                    </EmployeeTable>
-
+                        return (
+                            <tr>
+                                <td>
+                                    <img src=
+                                        {employee.picture.medium} alt={employee.name.first}>
+                                    </img>
+                                </td>
+                                <td>
+                                    {employee.name.last} ,
+                                    {employee.name.first}
+                                </td>
+                                <td>
+                                    {employee.email}
+                                </td>
+                            </tr>)
+                    })}
+                </EmployeeTable>
             </main>
         );
     }
