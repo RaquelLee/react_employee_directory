@@ -6,7 +6,6 @@ import API from "../../utils/API";
 
 class EmployeeContainer extends Component {
     state = {
-        search: '',
         employees: [],
     };
 
@@ -23,33 +22,25 @@ class EmployeeContainer extends Component {
             .catch(err => console.log(err));
     };
 
-    handleSearchInput = (e) => {
-        this.setState({ search: e.target.value });
-    };
-
     SearchEmployeeByName = (e) => {
-        this.employees.filter((employee) => {
-            return employee.name.first === this.search;
-        });
-    };
-
-    componentDidUpdate(prevProps) {
-        // Typical usage (don't forget to compare props):
-        if (this.props.search !== prevProps.search) {
-            this.SearchEmployeeByName()
-        };
+        const search = e.target.value;
+        console.log(search)
+        this.state.employees.filter((employee) => {
+            if (employee.name.first.toLowerCase().includes(search.toLowerCase())) {
+                console.log(employee.name.first)
+            } 
+            return employee
+        }); ;
     };
 
     render() {
-        const { employees, search } = this.state
+        const { employees} = this.state
         return (
             <main>
                 <form>
                     <input type="text" placeholder="Name"
-                        value={search}
                         onChange=
-                        {this.handleSearchInput}
-                        {...console.log(search)}>
+                        {this.SearchEmployeeByName}>
                     </input>
                 </form>
                 <EmployeeTable>
