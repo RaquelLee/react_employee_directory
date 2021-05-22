@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import EmployeeTable from "../EmployeeTable";
 import API from "../../utils/API";
 // api starts with .result, 
 // render name search here
@@ -15,9 +14,8 @@ class EmployeeContainer extends Component {
 
     setAllEmployees = () => {
         API.getEmployees()
-            .then(res =>
-                this.setState(
-                    { employees: res.data.results }))
+            .then(res => this.setState(
+                { employees: res.data.results }))
             .then(console.log(this.state.employees))
             .catch(err => console.log(err));
     };
@@ -25,16 +23,42 @@ class EmployeeContainer extends Component {
     SearchEmployeeByName = (e) => {
         const search = e.target.value;
         console.log(search)
-        this.state.employees.filter((employee) => {
-            if (employee.name.first.toLowerCase().includes(search.toLowerCase())) {
-                console.log(employee.name.first)
-            } 
-            return employee
-        }); ;
+        const searchedEmployee = this.state.employees.filter((employee) => {
+            if (employee.name.first.toLowerCase()
+            .includes(search.toLowerCase() ||
+            employee.name.last.toLowerCase()
+            .includes(search.toLowerCase()))) {
+                console.log(employee)
+            }
+            return employee;
+        });
+        this.setState({ employees: searchedEmployee })
+    };
+
+    SortEmployeeAsc = () => {
+        const sortedEmployeesAsc = this.state.employees.sort(function (a, b) {
+            var nameA = a.name.first.toLowerCase();
+            var nameB = b.name.first.toLowerCase();
+            if (nameA < nameB) return -1;
+            if (nameA > nameB) return 1;
+            return 0;
+        });   
+        this.setState({ employees: sortedEmployeesAsc })
+        };
+
+    SortEmployeeDesc = () => {
+        const sortedEmployeesDesc = this.state.employees.sort(function (a, b) {
+            var nameA = a.name.first.toLowerCase();
+            var nameB = b.name.first.toLowerCase();
+            if (nameA > nameB) return -1;
+            if (nameA < nameB) return 1;
+            return 0;
+        });   
+        this.setState({employees: sortedEmployeesDesc})
     };
 
     render() {
-        const { employees} = this.state
+        const { employees } = this.state
         return (
             <main>
                 <form>
@@ -43,28 +67,47 @@ class EmployeeContainer extends Component {
                         {this.SearchEmployeeByName}>
                     </input>
                 </form>
-                <EmployeeTable>
-                    {employees.map((employee) => {
-                        return (
-                            <tr>
-                                <td>
-                                    <img src=
-                                        {employee.picture.medium} alt={employee.name.first}>
-                                    </img>
-                                </td>
-                                <td>
-                                    {employee.name.last} ,
+                <table>
+                    <thead>
+                        <tr>
+                            <th scope="col">Photo</th>
+                            <th scope="col"><span>Name </span>
+                                <button onClick=
+                                    {this.SortEmployeeAsc}>&#9650;
+                        </button>
+                                <button onClick=
+                                    {this.SortEmployeeDesc}>&#9660;
+                        </button>
+                            </th>
+                            <th scope="col">Email</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {employees.map((employee) => {
+                            return (
+                                <tr key={employee.picture.medium}>
+                                    <td>
+                                        <img src=
+                                            {employee.picture.medium} alt="employee">
+                                        </img>
+                                    </td>
+                                    <td>
+                                        {employee.name.last} ,
                                     {employee.name.first}
-                                </td>
-                                <td>
-                                    {employee.email}
-                                </td>
-                            </tr>)
-                    })}
-                </EmployeeTable>
+                                    </td>
+                                    <td>
+                                        {employee.email}
+                                    </td>
+                                </tr>
+                            )
+                        })};
+                    </tbody>
+                </table>
             </main>
         );
     }
 }
 
 export default EmployeeContainer;
+// logged in function to pass to login component, using login function from app.js, main reason so login func is 
+//access to props.login
