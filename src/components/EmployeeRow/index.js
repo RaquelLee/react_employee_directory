@@ -29,6 +29,7 @@ class EmployeeContainer extends Component {
             employee.name.last.toLowerCase()
             .includes(search.toLowerCase()))) {
                 console.log(employee)
+                this.setState({ employees: employee})
             }
             return employee;
         });
@@ -85,7 +86,7 @@ class EmployeeContainer extends Component {
                     <tbody>
                         {employees.map((employee) => {
                             return (
-                                <tr key={employee.picture.medium}>
+                                <tr key={employee.email}>
                                     <td>
                                         <img src=
                                             {employee.picture.medium} alt="employee">
