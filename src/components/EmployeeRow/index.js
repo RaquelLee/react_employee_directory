@@ -19,7 +19,7 @@ class EmployeeContainer extends Component {
             .then(console.log(this.state.employees))
             .catch(err => console.log(err));
     };
-
+// set search as state to dynamically update
     SearchEmployeeByName = (e) => {
         const search = e.target.value;
         console.log(search)
@@ -28,12 +28,15 @@ class EmployeeContainer extends Component {
             .includes(search.toLowerCase() ||
             employee.name.last.toLowerCase()
             .includes(search.toLowerCase()))) {
-                console.log(employee)
-                this.setState({ employees: employee})
+                console.log("31 if statement",employee)
+                return employee;
             }
-            return employee;
         });
+        console.log("searched employee", searchedEmployee )
         this.setState({ employees: searchedEmployee })
+        if (search === "") {
+            this.setAllEmployees()
+        }
     };
 
     SortEmployeeAsc = () => {
