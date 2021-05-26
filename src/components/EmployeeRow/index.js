@@ -1,11 +1,13 @@
 import React, { Component } from "react";
 import API from "../../utils/API";
+import EmployeeTable from '../EmployeeTable'
 // api starts with .result, 
 // render name search here
 
 class EmployeeContainer extends Component {
     state = {
         employees: [],
+        search: ''
     };
 
     componentDidMount() {
@@ -21,20 +23,20 @@ class EmployeeContainer extends Component {
     };
 // set search as state to dynamically update
     SearchEmployeeByName = (e) => {
-        const search = e.target.value;
-        console.log(search)
+        this.setState({search :e.target.value})
+        // console.log(this.state.search)
         const searchedEmployee = this.state.employees.filter((employee) => {
             if (employee.name.first.toLowerCase()
-            .includes(search.toLowerCase() ||
+            .includes(this.state.search.toLowerCase() ||
             employee.name.last.toLowerCase()
-            .includes(search.toLowerCase()))) {
+            .includes(this.state.search.toLowerCase()))) {
                 console.log("31 if statement",employee)
                 return employee;
             }
         });
         console.log("searched employee", searchedEmployee )
         this.setState({ employees: searchedEmployee })
-        if (search === "") {
+        if (this.state.search === "") {
             this.setAllEmployees()
         }
     };
@@ -71,7 +73,7 @@ class EmployeeContainer extends Component {
                         {this.SearchEmployeeByName}>
                     </input>
                 </form>
-                <table>
+                <EmployeeTable>
                     <thead>
                         <tr>
                             <th scope="col">Photo</th>
@@ -106,7 +108,7 @@ class EmployeeContainer extends Component {
                             )
                         })};
                     </tbody>
-                </table>
+                    </EmployeeTable>
             </main>
         );
     }
